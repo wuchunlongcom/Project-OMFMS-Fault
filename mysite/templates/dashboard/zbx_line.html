@@ -1,0 +1,163 @@
+{% extends 'base/base_site.html' %} 
+
+{% block content %}
+<div class="ibox-title">
+  <h5>统计报表</h5>
+</div>
+<div class="ibox-content">
+    
+<div class="row">
+        <div class="col-md-12 column">  
+        <div id = 'title_total'></div>
+        <div style="min-height: 280px;">
+          <div id="main1"  style="height: 300px;"></div>
+        </div>
+    </div>
+    <div class="col-md-12 column">
+        <div id = 'title_2019'></div>
+        <div style="min-height: 280px;">
+          <div id="main2"  style="height: 300px;"></div>
+        </div>
+    </div>
+
+</div>   
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ block.super}}
+
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script> 
+<script type="text/javascript">
+   
+  $(document).ready(function(){
+   
+    $.ajax({
+        type:'GET',
+        url:"{% url 'zbx_data_line' %}",
+        dataType: 'json',
+        async: true,
+
+        success:function(result){                    
+            if (result) {               
+
+                init(result);
+                //console.log('others');                
+            } 
+
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown){     
+            alert(textStatus+': '+errorThrown);     
+        }
+        
+    });
+  
+  });
+
+function init(result){         
+        // 实例 1
+        var myChart = echarts.init(document.getElementById('main1'));
+        document.getElementById("title_total").innerHTML = result['title_total'];
+        var option = {
+            grid: {
+                top: '5%',
+                right: '2%',
+                left: '1%',
+                bottom: '10%',
+                containLabel: true
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap : false,  //'周一' 从x轴 0 开始
+                data: result['data_x'] //['周一','周二','周三','周四','周五','周六','周日']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name:result['name_total'],
+                data: result['total_data_y'], //[820, 932, 901, 934, 1290, 1330, 1320],
+                type: result['type'],
+                smooth: true
+            }]
+        };
+        myChart.setOption(option);
+
+        // 实例 2
+        var myChart = echarts.init(document.getElementById('main2'));
+        document.getElementById("title_2019").innerHTML = result['title_2019'];
+        var option = {
+            tooltip : {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: {
+                data: result['legend_data'] // ['值班系统', '安防系统', '文电系统', '视频系统']
+            },
+
+            grid: {
+                top: '5%',
+                right: '2%',
+                left: '1%',
+                bottom: '10%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : result['data_x'] //['周一','周二','周三','周四','周五','周六','周日']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:result['name_0'], //'PV',
+                    type: result['type'],
+                    areaStyle: {normal: {}},
+                    data:result['value_0'], //[120, 132, 101, 134, 90, 230, 210],
+                    smooth: true
+                },
+                {
+                    name:result['name_1'],
+                    type: result['type'],
+                    areaStyle: {normal: {}},
+                    data:result['value_1'],
+                    smooth: true,
+                },
+                {
+                    name:result['name_2'],
+                    type: result['type'],
+                    areaStyle: {normal: {}},
+                    data:result['value_2'],
+                    smooth: true,
+                },
+                {
+                    name:result['name_3'],
+                    type: result['type'],
+                    areaStyle: {normal: {}},
+                    data:result['value_3'],
+                    smooth: true,
+                }
+
+            ]
+        };
+        myChart.setOption(option);
+
+}
+
+</script>
+
+{% endblock %}

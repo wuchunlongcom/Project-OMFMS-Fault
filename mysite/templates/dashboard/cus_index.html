@@ -1,0 +1,209 @@
+{% extends 'base/base_site.html' %} 
+
+{% block content %}
+<div class="ibox-title">
+  <h5>统计报表</h5>
+</div>
+<div class="ibox-content">
+    
+<div class="row">
+    <div class="col-md-6 column">  
+        <div id="name_level" > </div> <!-- id显示js中的值 -->
+        <div style="min-height: 280px;">
+          <div id="main1"  style="height: 300px;"></div>
+        </div>
+    </div>
+    <div class="col-md-6 column">
+        <div id="name_type" > </div>
+        <div style="min-height: 280px;">
+          <div id="main2"  style="height: 300px;"></div>
+        </div>
+    </div>
+    <div class="col-md-6 column">
+        <div id="name_project" > </div> 
+        <div style="min-height: 280px;">
+          <div id="main3" style="height: 300px;"></div>
+        </div>
+    </div>
+    <div class="col-md-6 column">
+        <div id="name_status" > </div>
+        <div style="min-height: 280px;">
+          <div id="main4" style="height: 300px;"></div>
+        </div>
+    </div>
+</div>   
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ block.super}}
+
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script> 
+<script type="text/javascript">
+   
+  $(document).ready(function(){
+   
+    $.ajax({
+        type:'GET',
+        url:"{% url 'cus_index_data' %}",
+        dataType: 'json',
+        async: true,
+
+        success:function(result){                           
+            if (result) {        
+                init(result);                             
+            } 
+        },
+        error:function(XMLHttpRequest, textStatus, errorThrown){     
+            alert(textStatus+': '+errorThrown);     
+        }        
+    });
+  
+  });
+
+function init(result){
+         
+        //alert(result);
+        //console.log('others'); 
+        //  饼状图表1
+        var myChart = echarts.init(document.getElementById('main1'));
+        // 指定图表的配置项和数据
+        document.getElementById("name_level").innerHTML = result['name_level'];
+        var option = {
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: result['legend_data_level'] 
+            },
+            series : [
+                {
+                    name: result['name_level'],
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: result['series_data_level'],
+
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+
+        
+        // 饼状图表2
+        var myChart = echarts.init(document.getElementById('main2'));
+        // 指定图表的配置项和数据
+        document.getElementById("name_type").innerHTML = result['name_type'];
+        var option = {
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: result['legend_data_type'] 
+            },
+            series : [
+                {
+                    name: result['name_type'],
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: result['series_data_type'],
+
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+
+        //  饼状图表3
+        var myChart = echarts.init(document.getElementById('main3'));
+        // 指定图表的配置项和数据
+        document.getElementById("name_project").innerHTML = result['name_project'];
+        var option = {
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: result['legend_data_project'] 
+            },
+            series : [
+                {
+                    name: result['name_project'],
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: result['series_data_project'],
+
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+
+        //  饼状图表4
+        var myChart = echarts.init(document.getElementById('main4'));
+        // 指定图表的配置项和数据
+        document.getElementById("name_status").innerHTML = result['name_status'];
+        var option = {
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: result['legend_data_status'] 
+            },
+            series : [
+                {
+                    name: result['name_status'],
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data: result['series_data_status'],
+
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+        
+}
+
+    </script>
+
+{% endblock %}

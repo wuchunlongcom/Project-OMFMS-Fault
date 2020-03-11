@@ -1,0 +1,78 @@
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="/static/img/96x96.jpg" />
+                             </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> 
+                                <span class="block m-t-xs">
+
+                                <strong class="font-bold">
+                                    {% if request.user.fullname %} 
+                                       中文名: {{request.user.fullname}} 
+                                    {%else%} 
+                                        
+                                    {%endif%}
+                                </strong>
+
+                                </span> 
+                                <span class="text-muted text-xs block">
+                                 
+
+                                 {% if request.user.is_anonymous %}
+                                      匿名用户
+                                 {% elif request.user.is_superuser %}
+                                      管理员: {{request.user.email}}
+                                 {% else %}
+                                      普通用户: {{request.user.email}}
+                                 {% endif %}
+
+                                <b class="caret"></b>
+                                </span> 
+                             </span>
+                            </a>
+                            
+                        </div>
+                        <div class="logo-element">
+                            FMS
+                        </div>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa fa-bar-chart-o"></i> <span class="nav-label">数据可视化</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href={% url 'cus_dashboard_index' %}>Dashboard 统计报表</a></li>
+                            <li><a href={% url 'zbx_line' %}>Line 年度月故障报表</a></li>
+                            <li><a href={% url 'zbx_bar' %}>Bar 年度月故障报表</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'fms_list' %}"><i class="fa fa-th-large"></i> <span class="nav-label"> 故障管理 </span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href={% url 'fms_list' %}> 故障列表 </a></li>
+                            <li><a href={% url 'fms_add' %}> 新建故障 </a></li>
+                            <li><a href={% url 'type_add' %}> 故障类型 </a></li>
+                        </ul>
+                    </li>
+
+                    {% if request.user.is_superuser %}
+                    <li>
+                        <a href="{% url 'user_user' %}"><i class="fa fa-group"></i> <span class="nav-label">权限管理 </span><span class="fa arrow"></span>
+                       <!-- <span class="label label-warning pull-right">New</span>-->
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href={% url 'user_user' %}> 用户管理 </a></li>
+                            <li><a href={% url 'accounts_group' %}> 用户组 </a></li>
+                            <li><a href={% url 'project_list' %}> 项目管理 </a></li>
+                            <li><a href={% url 'contact_list' %}> 邮件管理 </a></li>
+                        
+                        </ul>
+                    </li>
+                    {% endif %}
+                    
+                </ul>
+
+            </div>
+        </nav>
