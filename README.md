@@ -1,13 +1,19 @@
 OMFMS(Operation Maintenance Fault Management System: 运维故障管理系统)
 =====================================================================
-关键词：重写用户模型 数据可视化 邮件 ajax 前后端分享 Form Page
-[![Build Status](https://img.shields.io/travis/geekwolf/fms.svg?branch=master)](https://img.shields.io/travis/geekwolf/fms.svg)
+### 关键词：重写用户模型 数据可视化 邮件 ajax 前后端分享 Form Page
+```
+超级用户
+admin@test.com/admin
+普通用户    
+root@test.com/admin  
+wcl6005@test.com/admin           
+```     
 
 ### run
 ```
-运行：    $ ./start.sh
+运行：   $ ./start.sh
 初始化：  $ ./start.sh -i
-问题咨询：微信-13402553918  邮箱-wuchunlongcom@outlook.com  
+问题咨询：13402553918 wuchunlongcom@outlook.com  
 ```
 
 ### 解决BUG问题记录
